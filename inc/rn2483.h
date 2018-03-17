@@ -19,9 +19,10 @@
 #include "config.h"
 // standard
 #include <stdio.h>      //fgetc, fprintf
-#include <string.h>     //strlen
+#include <string.h>     //strlen, strcmp
 #include <stdint.h>     //uint8_t
 #include <stdbool.h>    //bool
+#include <stdlib.h>     //malloc
 //defines
 #define RN2483_MAX_BUFF	33 /**< Maximum(+1) number of characters returned by RN2483 responses */
 
@@ -33,6 +34,10 @@ enum RN2483_ReturnCodes {
 	RN2483_SUCCESS,                 /**< Success */
 	RN2483_ERR_PARAM,               /**< Error: invalid parameter passed to function */
 	RN2483_EOB = RN2483_MAX_BUFF,	/**< Reached end of buffer passed to function */
+    RN2483_ERR_KIDS,                /**< Error: tried to join a LoraWAN network without the correct keys & ids (kids) configured */
+    RN2483_ERR_BUSY,                /**< Error: tried to join/tx but all configured frequency channels were busy, wait and try again */
+    RN2483_ERR_STATE,               /**< Error: current state cannot perform action, see RN2483 documentation */
+    RN2483_DENIED,                  /**< Join command went through, but the network denied your join request */
 	RN2483_ERR_PANIC	            /**< Error: SOMETHING(???) went wrong. You found a bug! */
 };
 //! Valid LoRaWAN join modes @see RN2483_join(int mode)
@@ -61,7 +66,7 @@ int RN2483_autobaud();
     to response
 
     @return RN2483_ERR_PARAM if the command does not end in "\r\n" (required, see documentation)
-    @return RN2483_SU
+    @return RN2483_SUCCESS command was successful and response was valid
 
     @see RN2483 LoRa Technology Module Command Reference User's Guide
 */
@@ -77,7 +82,7 @@ int	RN2483_command(const char *command, char *response);
         "sys get ver\r\n"
 
     @return RN2483_SUCCESS Successfully wrote the firmware version of RN2483 into response
-    @return RN2483_ERR_
+    @return RN2483_ERR_PANIC Managed to read <= 0 bytes...
 */
 int RN2483_firmware(char *buff);
 
@@ -95,7 +100,19 @@ int RN2483_firmware(char *buff);
 int RN2483_initMAC();
 //! Attempts to join a LoRa network using the specified mode.
 /*!
-	TODO
+	Sends out a request to join local LoRaWAN network in set mode, there are two responses from the 
+    RN2483 (handled by this function), the first detirmines whether the command was correct, the 
+    second detirmines whether the join request was successful.
+
+    @see RN2483_JoinModes for valid mode values
+
+    @return RN2483_ERR_PARAM Invalid mode parameter
+    @return RN2483_ERR_PANIC Error reading response from the RN2384
+    @return RN2483_ERR_KIDS Required keys & identifiers are not intialised
+    @return RN2483_ERR_BUSY All configured frequency channels are currently busy, wait and try again
+    @return RN2483_ERR_STATE Module cannot make join request in current state
+    @return RN2483_DENIED Request went through, but the network denied your request
+    @return RN2483_SUCCESS Successfully joined LoRaWAN network
 */
 int RN2483_join(int mode);
 //! Sends a confirmed/unconfirmed frame with an application payload of buff.
