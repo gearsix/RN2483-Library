@@ -18,8 +18,10 @@
 // custom
 #include "config.h"
 // standard
-#include <stdio.h>
-#include <string.h>
+#include <stdio.h>      //fgetc, fprintf
+#include <string.h>     //strlen
+#include <stdint.h>     //uint8_t
+#include <stdbool.h>    //bool
 //defines
 #define RN2483_MAX_BUFF	33 /**< Maximum(+1) number of characters returned by RN2483 responses */
 
@@ -89,7 +91,7 @@ int RN2483_firmware(char *buff);
 	@return RN2483_ERR_PARAM Likely means memory issue was caused while reading a response from the 
 			RN2483
 	@return RN2483_ERR_PANIC If this happens something went really wrong when writing a command
-*//
+*/
 int RN2483_initMAC();
 //! Attempts to join a LoRa network using the specified mode.
 /*!
