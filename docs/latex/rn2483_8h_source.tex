@@ -1,0 +1,54 @@
+\hypertarget{rn2483_8h_source}{}\section{rn2483.\+h}
+\label{rn2483_8h_source}\index{src/rn2483.\+h@{src/rn2483.\+h}}
+
+\begin{DoxyCode}
+00001 \textcolor{comment}{/*}
+00002 \textcolor{comment}{    @file   rn2483.h}
+00003 \textcolor{comment}{    @author Alexander Collins (alexander-collins@outlook.com)}
+00004 \textcolor{comment}{    @date   September 2017 - April 2018}
+00005 \textcolor{comment}{    @brief  A library for embedded platforms that allows for interaction with a Microchip RN2483.}
+00006 \textcolor{comment}{}
+00007 \textcolor{comment}{    @see https://www.microchip.com/wwwproducts/en/RN2483}
+00008 \textcolor{comment}{    @see https://www.rs-online.com/designspark/rel-assets/ds-assets/uploads/knowledge-items/
+      application-notes-for-the-internet-of-things/LoRaWAN%20Specification%201R0.pdf}
+00009 \textcolor{comment}{*/}
+00010 
+00011 \textcolor{preprocessor}{#ifndef RN2483}
+00012 \textcolor{preprocessor}{#define RN2483}
+00013 
+00014 \textcolor{comment}{//========}
+00015 \textcolor{comment}{// MACROS}
+00016 \textcolor{comment}{//========}
+00017 \textcolor{comment}{//includes}
+00018 
+00019 \textcolor{comment}{//defines}
+\Hypertarget{rn2483_8h_source_l00020}\hyperlink{rn2483_8h_a4ba22651381954553c4ecaf79d32efa8}{00020} \textcolor{preprocessor}{#define RN2483\_MAX\_BUFF 33 }
+00022 \textcolor{preprocessor}{//=========}
+00023 \textcolor{comment}{// GLOBALS}
+00024 \textcolor{comment}{//=========}
+\Hypertarget{rn2483_8h_source_l00026}\hyperlink{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78}{00026} \textcolor{comment}{}\textcolor{keyword}{enum} \hyperlink{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78}{RN2483\_ReturnCodes} \{
+00027     RN2483\_SUCCESS      
+\Hypertarget{rn2483_8h_source_l00028}\hyperlink{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78ad1b0df589d3f2198658fbcf4e314f995}{00028}     \hyperlink{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78ad1b0df589d3f2198658fbcf4e314f995}{RN2483\_ERR\_PARAM}    
+00029 \};
+\Hypertarget{rn2483_8h_source_l00031}\hyperlink{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0}{00031} \textcolor{keyword}{enum} \hyperlink{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0}{RN2483\_JoinModes} \{
+\Hypertarget{rn2483_8h_source_l00032}\hyperlink{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0a9007020363e652f0ebc6afd40238b888}{00032}     \hyperlink{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0a9007020363e652f0ebc6afd40238b888}{RN2483\_OTAA}, 
+\Hypertarget{rn2483_8h_source_l00033}\hyperlink{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0a08ea384233dbb3d08da262ea85ccaa59}{00033}     \hyperlink{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0a08ea384233dbb3d08da262ea85ccaa59}{RN2483\_ABP}        
+00034 \};
+00035 
+00036 \textcolor{comment}{//===========}
+00037 \textcolor{comment}{// FUNCTIONS}
+00038 \textcolor{comment}{//===========}
+00039 \textcolor{comment}{//system}
+00041 \textcolor{comment}{}\textcolor{keywordtype}{int} \hyperlink{rn2483_8h_af6312665d0965718a83a3ec875646e52}{RN2483\_reset}();
+00043 \textcolor{keywordtype}{int} \hyperlink{rn2483_8h_af306054852a7ebbe216caa51a7ce820c}{RN2483\_autobaud}();
+00045 \textcolor{keywordtype}{int} \hyperlink{rn2483_8h_a5044f1f762ded7518cacab3293875123}{RN2483\_command}(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *command, \textcolor{keywordtype}{char} *response);
+00047 \textcolor{keywordtype}{int} \hyperlink{rn2483_8h_aa872ef8cebe75785f0dd5c7b58de3f4b}{RN2483\_firmware}(\textcolor{keywordtype}{char} *buff);
+00048 
+00049 \textcolor{comment}{//LoRa}
+00051 \textcolor{comment}{}\textcolor{keywordtype}{int} \hyperlink{rn2483_8h_adab3fa1ef65dd8b74f91517b6d0f1e2f}{RN2483\_initMAC}();
+00053 \textcolor{keywordtype}{int} \hyperlink{rn2483_8h_a42e1561b4e2af7845d03889240fd9a51}{RN2483\_join}(\textcolor{keywordtype}{int} mode);
+00055 \textcolor{keywordtype}{int} \hyperlink{rn2483_8h_aa942de8d55b44b932613eebf33f0615e}{RN2483\_tx}(\textcolor{keyword}{const} uint8\_t *buff, \textcolor{keywordtype}{bool} confirm);
+00056 
+00057 \textcolor{preprocessor}{#endif // RN2483}
+00058 
+\end{DoxyCode}

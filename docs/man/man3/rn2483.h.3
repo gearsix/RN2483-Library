@@ -1,0 +1,128 @@
+.TH "src/rn2483.h" 3 "Sat Mar 17 2018" "Version 1.0" "LoRa RN2483 Library" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/rn2483.h
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBRN2483_MAX_BUFF\fP   33"
+.br
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBRN2483_ReturnCodes\fP { \fBRN2483_ERR_PARAM\fP }
+.RI "Values returned by RN2483_* functions\&. ""
+.br
+.ti -1c
+.RI "enum \fBRN2483_JoinModes\fP { \fBRN2483_OTAA\fP, \fBRN2483_ABP\fP }
+.RI "Valid LoRaWAN join modes\&. ""
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBRN2483_reset\fP ()"
+.br
+.RI "Resets the RN2483 by toggling the RESET pin\&. "
+.ti -1c
+.RI "int \fBRN2483_autobaud\fP ()"
+.br
+.RI "Attempts to trigger the auto-baud detection sequence\&. "
+.ti -1c
+.RI "int \fBRN2483_command\fP (const char *command, char *response)"
+.br
+.RI "Write a command to the RN2483 and recieve it's response\&. "
+.ti -1c
+.RI "int \fBRN2483_firmware\fP (char *buff)"
+.br
+.RI "Retrieves the firmware version of the RN2483 module and stores it in buff\&. "
+.ti -1c
+.RI "int \fBRN2483_initMAC\fP ()"
+.br
+.RI "Initialises all the RN2483 MAC settings required to run LoRa commands (join, tx, etc)\&. "
+.ti -1c
+.RI "int \fBRN2483_join\fP (int mode)"
+.br
+.RI "Attempts to join a LoRa network using the specified mode\&. "
+.ti -1c
+.RI "int \fBRN2483_tx\fP (const uint8_t *buff, bool confirm)"
+.br
+.RI "Sends a confirmed/unconfirmed frame with an application payload of buff\&. "
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define RN2483_MAX_BUFF   33"
+Maximum(+1) number of characters returned by RN2483 responses 
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBRN2483_JoinModes\fP"
+
+.PP
+Valid LoRaWAN join modes\&. 
+.PP
+\fBSee also:\fP
+.RS 4
+\fBRN2483_join(int mode)\fP 
+.RE
+.PP
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIRN2483_OTAA \fP\fP
+Over-the-Air-Activation 
+.TP
+\fB\fIRN2483_ABP \fP\fP
+Activation-By-Personalization 
+.SS "enum \fBRN2483_ReturnCodes\fP"
+
+.PP
+Values returned by RN2483_* functions\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIRN2483_ERR_PARAM \fP\fP
+Success Error: invalid parameter passed to function 
+.SH "Function Documentation"
+.PP 
+.SS "int RN2483_autobaud ()"
+
+.PP
+Attempts to trigger the auto-baud detection sequence\&. 
+.SS "int RN2483_command (const char * command, char * response)"
+
+.PP
+Write a command to the RN2483 and recieve it's response\&. 
+.SS "int RN2483_firmware (char * buff)"
+
+.PP
+Retrieves the firmware version of the RN2483 module and stores it in buff\&. 
+.SS "int RN2483_initMAC ()"
+
+.PP
+Initialises all the RN2483 MAC settings required to run LoRa commands (join, tx, etc)\&. 
+.SS "int RN2483_join (int mode)"
+
+.PP
+Attempts to join a LoRa network using the specified mode\&. 
+.SS "int RN2483_reset ()"
+
+.PP
+Resets the RN2483 by toggling the RESET pin\&. 
+.SS "int RN2483_tx (const uint8_t * buff, bool confirm)"
+
+.PP
+Sends a confirmed/unconfirmed frame with an application payload of buff\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for LoRa RN2483 Library from the source code\&.

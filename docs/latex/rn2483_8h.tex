@@ -1,0 +1,158 @@
+\hypertarget{rn2483_8h}{}\section{src/rn2483.h File Reference}
+\label{rn2483_8h}\index{src/rn2483.\+h@{src/rn2483.\+h}}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{rn2483_8h_a4ba22651381954553c4ecaf79d32efa8}{R\+N2483\+\_\+\+M\+A\+X\+\_\+\+B\+U\+FF}~33
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78}{R\+N2483\+\_\+\+Return\+Codes} \{ \hyperlink{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78ad1b0df589d3f2198658fbcf4e314f995}{R\+N2483\+\_\+\+E\+R\+R\+\_\+\+P\+A\+R\+AM}
+ \}\begin{DoxyCompactList}\small\item\em Values returned by R\+N2483\+\_\+$\ast$ functions. \end{DoxyCompactList}
+\item 
+enum \hyperlink{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0}{R\+N2483\+\_\+\+Join\+Modes} \{ \hyperlink{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0a9007020363e652f0ebc6afd40238b888}{R\+N2483\+\_\+\+O\+T\+AA}, 
+\hyperlink{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0a08ea384233dbb3d08da262ea85ccaa59}{R\+N2483\+\_\+\+A\+BP}
+ \}\begin{DoxyCompactList}\small\item\em Valid Lo\+Ra\+W\+AN join modes. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{rn2483_8h_af6312665d0965718a83a3ec875646e52}{R\+N2483\+\_\+reset} ()
+\begin{DoxyCompactList}\small\item\em Resets the R\+N2483 by toggling the R\+E\+S\+ET pin. \end{DoxyCompactList}\item 
+int \hyperlink{rn2483_8h_af306054852a7ebbe216caa51a7ce820c}{R\+N2483\+\_\+autobaud} ()
+\begin{DoxyCompactList}\small\item\em Attempts to trigger the auto-\/baud detection sequence. \end{DoxyCompactList}\item 
+int \hyperlink{rn2483_8h_a5044f1f762ded7518cacab3293875123}{R\+N2483\+\_\+command} (const char $\ast$command, char $\ast$response)
+\begin{DoxyCompactList}\small\item\em Write a command to the R\+N2483 and recieve it\textquotesingle{}s response. \end{DoxyCompactList}\item 
+int \hyperlink{rn2483_8h_aa872ef8cebe75785f0dd5c7b58de3f4b}{R\+N2483\+\_\+firmware} (char $\ast$buff)
+\begin{DoxyCompactList}\small\item\em Retrieves the firmware version of the R\+N2483 module and stores it in buff. \end{DoxyCompactList}\item 
+int \hyperlink{rn2483_8h_adab3fa1ef65dd8b74f91517b6d0f1e2f}{R\+N2483\+\_\+init\+M\+AC} ()
+\begin{DoxyCompactList}\small\item\em Initialises all the R\+N2483 M\+AC settings required to run Lo\+Ra commands (join, tx, etc). \end{DoxyCompactList}\item 
+int \hyperlink{rn2483_8h_a42e1561b4e2af7845d03889240fd9a51}{R\+N2483\+\_\+join} (int mode)
+\begin{DoxyCompactList}\small\item\em Attempts to join a Lo\+Ra network using the specified mode. \end{DoxyCompactList}\item 
+int \hyperlink{rn2483_8h_aa942de8d55b44b932613eebf33f0615e}{R\+N2483\+\_\+tx} (const uint8\+\_\+t $\ast$buff, bool confirm)
+\begin{DoxyCompactList}\small\item\em Sends a confirmed/unconfirmed frame with an application payload of buff. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{rn2483_8h_a4ba22651381954553c4ecaf79d32efa8}\label{rn2483_8h_a4ba22651381954553c4ecaf79d32efa8}} 
+\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+\+M\+A\+X\+\_\+\+B\+U\+FF@{R\+N2483\+\_\+\+M\+A\+X\+\_\+\+B\+U\+FF}}
+\index{R\+N2483\+\_\+\+M\+A\+X\+\_\+\+B\+U\+FF@{R\+N2483\+\_\+\+M\+A\+X\+\_\+\+B\+U\+FF}!rn2483.\+h@{rn2483.\+h}}
+\subsubsection{\texorpdfstring{R\+N2483\+\_\+\+M\+A\+X\+\_\+\+B\+U\+FF}{RN2483\_MAX\_BUFF}}
+{\footnotesize\ttfamily \#define R\+N2483\+\_\+\+M\+A\+X\+\_\+\+B\+U\+FF~33}
+
+Maximum(+1) number of characters returned by R\+N2483 responses 
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0}\label{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0}} 
+\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+\+Join\+Modes@{R\+N2483\+\_\+\+Join\+Modes}}
+\index{R\+N2483\+\_\+\+Join\+Modes@{R\+N2483\+\_\+\+Join\+Modes}!rn2483.\+h@{rn2483.\+h}}
+\subsubsection{\texorpdfstring{R\+N2483\+\_\+\+Join\+Modes}{RN2483\_JoinModes}}
+{\footnotesize\ttfamily enum \hyperlink{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0}{R\+N2483\+\_\+\+Join\+Modes}}
+
+
+
+Valid Lo\+Ra\+W\+AN join modes. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{rn2483_8h_a42e1561b4e2af7845d03889240fd9a51}{R\+N2483\+\_\+join(int mode)} 
+\end{DoxySeeAlso}
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{R\+N2483\+\_\+\+O\+T\+AA@{R\+N2483\+\_\+\+O\+T\+AA}!rn2483.\+h@{rn2483.\+h}}\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+\+O\+T\+AA@{R\+N2483\+\_\+\+O\+T\+AA}}}\mbox{\Hypertarget{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0a9007020363e652f0ebc6afd40238b888}\label{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0a9007020363e652f0ebc6afd40238b888}} 
+R\+N2483\+\_\+\+O\+T\+AA&Over-\/the-\/\+Air-\/\+Activation \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{R\+N2483\+\_\+\+A\+BP@{R\+N2483\+\_\+\+A\+BP}!rn2483.\+h@{rn2483.\+h}}\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+\+A\+BP@{R\+N2483\+\_\+\+A\+BP}}}\mbox{\Hypertarget{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0a08ea384233dbb3d08da262ea85ccaa59}\label{rn2483_8h_a3b5645bbe6fb977c0cc8eb1d3670e5f0a08ea384233dbb3d08da262ea85ccaa59}} 
+R\+N2483\+\_\+\+A\+BP&Activation-\/\+By-\/\+Personalization \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78}\label{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78}} 
+\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+\+Return\+Codes@{R\+N2483\+\_\+\+Return\+Codes}}
+\index{R\+N2483\+\_\+\+Return\+Codes@{R\+N2483\+\_\+\+Return\+Codes}!rn2483.\+h@{rn2483.\+h}}
+\subsubsection{\texorpdfstring{R\+N2483\+\_\+\+Return\+Codes}{RN2483\_ReturnCodes}}
+{\footnotesize\ttfamily enum \hyperlink{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78}{R\+N2483\+\_\+\+Return\+Codes}}
+
+
+
+Values returned by R\+N2483\+\_\+$\ast$ functions. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{R\+N2483\+\_\+\+E\+R\+R\+\_\+\+P\+A\+R\+AM@{R\+N2483\+\_\+\+E\+R\+R\+\_\+\+P\+A\+R\+AM}!rn2483.\+h@{rn2483.\+h}}\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+\+E\+R\+R\+\_\+\+P\+A\+R\+AM@{R\+N2483\+\_\+\+E\+R\+R\+\_\+\+P\+A\+R\+AM}}}\mbox{\Hypertarget{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78ad1b0df589d3f2198658fbcf4e314f995}\label{rn2483_8h_a7343337746d25c0cdcd82c8df0413b78ad1b0df589d3f2198658fbcf4e314f995}} 
+R\+N2483\+\_\+\+E\+R\+R\+\_\+\+P\+A\+R\+AM&Success Error\+: invalid parameter passed to function \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{rn2483_8h_af306054852a7ebbe216caa51a7ce820c}\label{rn2483_8h_af306054852a7ebbe216caa51a7ce820c}} 
+\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+autobaud@{R\+N2483\+\_\+autobaud}}
+\index{R\+N2483\+\_\+autobaud@{R\+N2483\+\_\+autobaud}!rn2483.\+h@{rn2483.\+h}}
+\subsubsection{\texorpdfstring{R\+N2483\+\_\+autobaud()}{RN2483\_autobaud()}}
+{\footnotesize\ttfamily int R\+N2483\+\_\+autobaud (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Attempts to trigger the auto-\/baud detection sequence. 
+
+\mbox{\Hypertarget{rn2483_8h_a5044f1f762ded7518cacab3293875123}\label{rn2483_8h_a5044f1f762ded7518cacab3293875123}} 
+\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+command@{R\+N2483\+\_\+command}}
+\index{R\+N2483\+\_\+command@{R\+N2483\+\_\+command}!rn2483.\+h@{rn2483.\+h}}
+\subsubsection{\texorpdfstring{R\+N2483\+\_\+command()}{RN2483\_command()}}
+{\footnotesize\ttfamily int R\+N2483\+\_\+command (\begin{DoxyParamCaption}\item[{const char $\ast$}]{command,  }\item[{char $\ast$}]{response }\end{DoxyParamCaption})}
+
+
+
+Write a command to the R\+N2483 and recieve it\textquotesingle{}s response. 
+
+\mbox{\Hypertarget{rn2483_8h_aa872ef8cebe75785f0dd5c7b58de3f4b}\label{rn2483_8h_aa872ef8cebe75785f0dd5c7b58de3f4b}} 
+\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+firmware@{R\+N2483\+\_\+firmware}}
+\index{R\+N2483\+\_\+firmware@{R\+N2483\+\_\+firmware}!rn2483.\+h@{rn2483.\+h}}
+\subsubsection{\texorpdfstring{R\+N2483\+\_\+firmware()}{RN2483\_firmware()}}
+{\footnotesize\ttfamily int R\+N2483\+\_\+firmware (\begin{DoxyParamCaption}\item[{char $\ast$}]{buff }\end{DoxyParamCaption})}
+
+
+
+Retrieves the firmware version of the R\+N2483 module and stores it in buff. 
+
+\mbox{\Hypertarget{rn2483_8h_adab3fa1ef65dd8b74f91517b6d0f1e2f}\label{rn2483_8h_adab3fa1ef65dd8b74f91517b6d0f1e2f}} 
+\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+init\+M\+AC@{R\+N2483\+\_\+init\+M\+AC}}
+\index{R\+N2483\+\_\+init\+M\+AC@{R\+N2483\+\_\+init\+M\+AC}!rn2483.\+h@{rn2483.\+h}}
+\subsubsection{\texorpdfstring{R\+N2483\+\_\+init\+M\+A\+C()}{RN2483\_initMAC()}}
+{\footnotesize\ttfamily int R\+N2483\+\_\+init\+M\+AC (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialises all the R\+N2483 M\+AC settings required to run Lo\+Ra commands (join, tx, etc). 
+
+\mbox{\Hypertarget{rn2483_8h_a42e1561b4e2af7845d03889240fd9a51}\label{rn2483_8h_a42e1561b4e2af7845d03889240fd9a51}} 
+\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+join@{R\+N2483\+\_\+join}}
+\index{R\+N2483\+\_\+join@{R\+N2483\+\_\+join}!rn2483.\+h@{rn2483.\+h}}
+\subsubsection{\texorpdfstring{R\+N2483\+\_\+join()}{RN2483\_join()}}
+{\footnotesize\ttfamily int R\+N2483\+\_\+join (\begin{DoxyParamCaption}\item[{int}]{mode }\end{DoxyParamCaption})}
+
+
+
+Attempts to join a Lo\+Ra network using the specified mode. 
+
+\mbox{\Hypertarget{rn2483_8h_af6312665d0965718a83a3ec875646e52}\label{rn2483_8h_af6312665d0965718a83a3ec875646e52}} 
+\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+reset@{R\+N2483\+\_\+reset}}
+\index{R\+N2483\+\_\+reset@{R\+N2483\+\_\+reset}!rn2483.\+h@{rn2483.\+h}}
+\subsubsection{\texorpdfstring{R\+N2483\+\_\+reset()}{RN2483\_reset()}}
+{\footnotesize\ttfamily int R\+N2483\+\_\+reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Resets the R\+N2483 by toggling the R\+E\+S\+ET pin. 
+
+\mbox{\Hypertarget{rn2483_8h_aa942de8d55b44b932613eebf33f0615e}\label{rn2483_8h_aa942de8d55b44b932613eebf33f0615e}} 
+\index{rn2483.\+h@{rn2483.\+h}!R\+N2483\+\_\+tx@{R\+N2483\+\_\+tx}}
+\index{R\+N2483\+\_\+tx@{R\+N2483\+\_\+tx}!rn2483.\+h@{rn2483.\+h}}
+\subsubsection{\texorpdfstring{R\+N2483\+\_\+tx()}{RN2483\_tx()}}
+{\footnotesize\ttfamily int R\+N2483\+\_\+tx (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t $\ast$}]{buff,  }\item[{bool}]{confirm }\end{DoxyParamCaption})}
+
+
+
+Sends a confirmed/unconfirmed frame with an application payload of buff. 
+
