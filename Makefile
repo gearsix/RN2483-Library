@@ -18,29 +18,13 @@ ECHO	= echo
 CC		= $(cfg_COMPILER)
 AR		= ar rcs
 # files
-TARGET	= rn2483.a
 DIR_INC	= inc/
-SOURCES	= src/*.c
-OBJECTS	= *.o
-# flags
-FLAGS	= -I$(DIR_INC)
-CFLAGS	= -pedantic -Wall -Wextra
 
 #
 # BUILD
 #
 .PHONY: all
-all: init inc/config.h $(TARGET) clean
-
-$(TARGET): $(OBJECTS)
-	$(AR) $(TARGET) $(OBJECTS)
-
-$(OBJECTS): $(SOURCES)
-	$(CC) -c $(SOURCES) $(FLAGS) $(CFLAGS)
-
-.PHONY: clean
-clean:
-	$(RM) $(OBJECTS)
+all: init inc/config.h
 
 .SILENT: init
 init:
