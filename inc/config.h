@@ -12,4 +12,6 @@
 
 #define LoRaWAN_DataRate ""
 
+#define LoRaWAN_Port ""
+
 #endif // RN2483_CONFIG

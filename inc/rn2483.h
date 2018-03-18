@@ -38,6 +38,8 @@ enum RN2483_ReturnCodes {
     RN2483_ERR_BUSY,                /**< Error: tried to join/tx but all configured frequency channels were busy, wait and try again */
     RN2483_ERR_STATE,               /**< Error: current state cannot perform action, see RN2483 documentation */
     RN2483_DENIED,                  /**< Join command went through, but the network denied your join request */
+    RN2483_ERR_JOIN,                /**< Error: tried to tx data without being joined to a LoRaWAN network */
+    RN2483_NODOWN,                  /**< tx succeeded and no downlink was received */
 	RN2483_ERR_PANIC	            /**< Error: SOMETHING(???) went wrong. You found a bug! */
 };
 //! Valid LoRaWAN join modes @see RN2483_join(int mode)
@@ -119,7 +121,7 @@ int RN2483_join(int mode);
 /*!
 	TODO
 */
-int RN2483_tx(const uint8_t *buff, bool confirm);
+int RN2483_tx(const void *buff, bool confirm, char *downlink);
 
 #endif // RN2483
 
