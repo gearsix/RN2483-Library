@@ -61,7 +61,7 @@ int RN2483_reset();
 /*!
 	TODO
 */
-int RN2483_autobaud();
+int RN2483_autobaud(int baud);
 //! Write a command to the RN2483 and recieve it's response
 /*!
     Send a command to the RN2483, if the command is valid the RN2483's response will be written 

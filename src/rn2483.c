@@ -60,6 +60,34 @@ static int RN2483_response(uint8_t *response)
 
 //PUBLIC
 //system
+// Resets the RN2483 by toggling the RESET pin
+int RN2483_reset()
+{
+    /* PLACEHOLDER
+        implementation depends on platform?
+        
+        set RN2483 RESET pin HIGH
+        set RN2483 RESET pin LOW
+        set RN2483 RESET pin HIGH
+
+        RN2483_response() to check response == success
+    */
+    return RN2483_ERR_PANIC;
+}
+// Attempts to trigger the auto-baud detection sequence.
+in RN2483_autobaud(int baud)
+{
+    /* PLACEHOLDER
+        implementation depends on platform?
+
+        send break to RN2483
+        set baud rate
+        send 0x55
+
+        check success with "sys get ver\r\n"
+    */
+    return RN2483_ERR_PANIC;
+}
 // Sends a command to the RN2483 and sets the resposne in buffer
 int RN2483_command(const char *command, char *response)
 {
