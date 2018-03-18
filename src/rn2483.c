@@ -75,7 +75,7 @@ int RN2483_reset()
     return RN2483_ERR_PANIC;
 }
 // Attempts to trigger the auto-baud detection sequence.
-in RN2483_autobaud(int baud)
+int RN2483_autobaud(int baud)
 {
     /* PLACEHOLDER
         implementation depends on platform?

@@ -121,7 +121,7 @@ int RN2483_join(int mode);
 /*!
 	TODO
 */
-int RN2483_tx(const void *buff, bool confirm, char *downlink);
+int RN2483_tx(const char *buff, bool confirm, char *downlink);
 
 #endif // RN2483
 
