@@ -92,12 +92,13 @@ int RN2483_initMAC()
 
 	do {
 		ret++;
+        response[0] = '\0';
 		switch(ret)
 		{
 			case 0:	//reset MAC
 				ret = RN2483_command("mac reset " LoRaWAN_Frequency "\r\n", response);
 				break;
-			case 1:	// set DevAddr
+			case 1:	//set DevAddr
 				ret = RN2483_command("mac set devaddr " LoRaWAN_DevAddr "\r\n", response);
 				break;
 			case 2:	//set DevEui
@@ -112,6 +113,9 @@ int RN2483_initMAC()
 			case 5:	//set DataRate
 				ret = RN2483_command("mac set dr " LoRaWAN_DataRate "\r\n", response);
 				break;
+            case 6: //save
+                ret = RN2483_command("mac save\r\n", response);
+                break;
 		}
 	} while (ret == RN2483_SUCCESS && strcmp(response, "ok\r\n") == 0);
 
@@ -157,7 +161,7 @@ int RN2483_join(int mode)
     return ret;
 }
 // Sends a confirmed/unconfirmed frame with an application payload of buff.
-int RN2483_tx(const void *buff, bool confirm, char *downlink)
+int RN2483_tx(const char *buff, bool confirm, char *downlink)
 {
     int ret = RN2483_ERR_PANIC;
     char *response = (char *)malloc(RN2483_MAX_BUFF);
@@ -178,7 +182,7 @@ int RN2483_tx(const void *buff, bool confirm, char *downlink)
     get_hex_string((uint8_t *)buff, strlen(buff), payload); // see documentation notes on this
 
     // send command
-    char *cmd = malloc(max_len);
+    char *cmd = (char *)malloc(max_len);
     if (confirm)
         sprintf(cmd, "mac tx cnf %s %s\r\n", LoRaWAN_Port, payload);
     else
