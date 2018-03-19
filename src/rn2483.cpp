@@ -75,20 +75,19 @@ static int RN2483_response(uint8_t *response)
 //PUBLIC
 //system
 // Resets the RN2483 by toggling the RESET pin
-int RN2483_reset()
+int RN2483_reset(MicroBitSerial *serial, MicroBitPin *RESET)
 {
-    #ifndef DEBUG
-       #error "This function is platform-specific and requires implemention (see below)"
-    #endif
-    /*
-        implementation depends on platform?
-        
-        set RN2483 RESET pin HIGH
-        set RN2483 RESET pin LOW
-        set RN2483 RESET pin HIGH
+    RESET->setDigitalValue(1);
+    RESET->setDigitalValue(0);
+    RESET->setDigitalValue(1);
 
-        RN2483_response() to check response == success
-    */
+    int ret = serial->read();   //firmware version should be in buff (RN2483...)
+    if (ret == 'R')
+        ret = RN2483_SUCCESS;
+    else
+        ret = RN2483_ERR_PANIC;
+
+    return ret;
 }
 // Attempts to trigger the auto-baud detection sequence.
 int RN2483_autobaud(int baud)

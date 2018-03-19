@@ -17,6 +17,8 @@
 //includes
 // custom
 #include "config.h"
+// platform
+#include "MicroBit.h"   //MicroBit*
 // standard
 #include <stdio.h>      //fgetc, fprintf
 #include <string.h>     //strlen, strcmp
@@ -60,7 +62,7 @@ enum RN2483_JoinModes {
     @return RN2483_SUCCESS if version was succesfully retrieved after toggling the RESET pin
     @return RN2483_ERR_PANIC if version was not retrieved after toggling the RESET pin
 */
-extern int RN2483_reset();
+extern int RN2483_reset(MicroBitSerial *serial, MicroBitPin *RESET);
 //! Attempts to trigger the auto-baud detection sequence.
 /*!
     Triggers the autobaud detction sequence by sending a break, setting the baudrate and sending 0x55.
