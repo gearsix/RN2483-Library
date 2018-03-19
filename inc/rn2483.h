@@ -25,7 +25,7 @@
 #include <stdint.h>     //uint8_t
 #include <stdbool.h>    //bool
 //defines
-#define RN2483_MAX_BUFF	33 /**< Maximum(+1) number of characters returned by RN2483 responses */
+#define RN2483_MAX_BUFF	40 /**< Maximum(+1) number of characters returned by RN2483 responses */
 
 //=========
 // GLOBALS
@@ -83,7 +83,7 @@ int RN2483_autobaud(int baud);
 
     @see RN2483 LoRa Technology Module Command Reference User's Guide
 */
-int	RN2483_command(const char *command, char *response);
+int	RN2483_command(MicroBitSerial *serial, const char *command, char *response);
 //! Retrieves the firmware version of the RN2483 module and stores it in buff.
 /*!
     If successful, buff should contain a string that looks like this:
