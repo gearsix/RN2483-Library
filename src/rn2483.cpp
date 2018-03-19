@@ -56,15 +56,19 @@ static void get_hex_string(uint8_t *buff, int buff_len, char *ret)
     return;
 }
 // Reads from the RX buffer into response until '\n' or EOB
-static int RN2483_response(uint8_t *response)
+static int RN2483_response(MicroBitSerial *serial, uint8_t *buffer, uint8_t buffer_len)
 {
-	int i = 0;
+    int i;
 
-	while (*response != '\n' && i < RN2483_MAX_BUFF)
-	{
-		*response++ = read();
-		i++;
-	}
+    for (i = 0; i < buffer_len; i++)
+    {
+        buffer[i] = serial->read(ASYNC);
+
+        if (buffer[i] == 0x0C)
+            i--;
+        else if (buffer[i] == '\n')
+            break;
+    }
 
     if (i <= 0)
         return RN2483_ERR_PANIC;
@@ -106,7 +110,7 @@ int RN2483_autobaud(int baud)
     */
 }
 // Sends a command to the RN2483 and sets the resposne in buffer
-int RN2483_command(const char *command, char *response)
+int RN2483_command(MicroBitSerial *serial, const char *command, char *response)
 {
 	//check command ends with \r\n (easy to forget)
 	int end = strlen(command);
@@ -114,14 +118,15 @@ int RN2483_command(const char *command, char *response)
 		return RN2483_ERR_PARAM;
 	
 	//send command
-	fprintf(stdout, command);
+    serial->printf(command);
 
 	//recv response
-	if (RN2483_response((uint8_t *)response) != RN2483_ERR_PANIC)
+	if (RN2483_response(serial, (uint8_t *)response) != RN2483_ERR_PANIC)
         return RN2483_SUCCESS;
 	else
         return RN2483_ERR_PANIC;
 }
+
 // Retrieves the firmware version of the RN2483 module and stores it in buff.
 int RN2483_firmware(char *buff)
 {
