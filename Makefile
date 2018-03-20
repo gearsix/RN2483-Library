@@ -53,10 +53,14 @@ inc/config.h: rn2483.cfg
 	$(ECHO) "#define LoRaWAN_DevEUI  \"$(cfg_DevEUI)\""						>> $@
 	$(ECHO) "#define LoRaWAN_AppEUI  \"$(cfg_AppEUI)\""						>> $@
 	$(ECHO) "#define LoRaWAN_AppKey  \"$(cfg_AppKey)\""						>> $@
+	$(ECHO) "#define LoRaWAN_NwkSKey \"$(cfg_NwkSKey)\""					>> $@
+	$(ECHO) "#define LoRaWAN_AppSKey \"$(cfg_AppSKey)\""					>> $@
 	$(ECHO) ""																>> $@
 	$(ECHO) "#define LoRaWAN_JoinMode \"$(cfg_JoinMode)\""					>> $@
 	$(ECHO) ""																>> $@
 	$(ECHO) "#define LoRaWAN_DataRate \"$(cfg_DataRate)\""					>> $@
+	$(ECHO) ""																>> $@
+	$(ECHO) "#define LoRaWAN_ADR \"$(cfg_ADR)\""							>> $@
 	$(ECHO) ""																>> $@
 	$(ECHO) "#define LoRaWAN_Port \"$(cfg_Port)\""							>> $@
 	$(ECHO) "#endif // RN2483_CONFIG"										>> $@
