@@ -72,7 +72,7 @@ extern int RN2483_reset(MicroBitSerial *serial, MicroBitPin *RESET);
     @return RN2483_SUCCESS if RN2483_firmware() succeeded after autobaud.
     @return RN2483_ERR_PANIC if RN2483_firmware() failed after autobaud.
 */
-int RN2483_autobaud(int baud);
+extern int RN2483_autobaud(int baud);
 //! Write a command to the RN2483 and recieve it's response
 /*!
     Send a command to the RN2483, if the command is valid the RN2483's response will be written 
@@ -83,7 +83,7 @@ int RN2483_autobaud(int baud);
 
     @see RN2483 LoRa Technology Module Command Reference User's Guide
 */
-int	RN2483_command(MicroBitSerial *serial, const char *command, char *response);
+extern int	RN2483_command(MicroBitSerial *serial, const char *command, char *response);
 //! Retrieves the firmware version of the RN2483 module and stores it in buff.
 /*!
     If successful, buff should contain a string that looks like this:
@@ -97,7 +97,7 @@ int	RN2483_command(MicroBitSerial *serial, const char *command, char *response);
     @return RN2483_SUCCESS Successfully wrote the firmware version of RN2483 into response
     @return RN2483_ERR_PANIC Managed to read <= 0 bytes...
 */
-int RN2483_firmware(char *buff);
+extern int RN2483_firmware(char *buff);
 
 //LoRa
 //! Initialises all the RN2483 MAC settings required to run LoRa commands (join, tx, etc).
@@ -110,7 +110,7 @@ int RN2483_firmware(char *buff);
 			RN2483
 	@return RN2483_ERR_PANIC If this happens something went really wrong when writing a command
 */
-int RN2483_initMAC();
+extern int RN2483_initMAC();
 //! Attempts to join a LoRa network using the specified mode.
 /*!
 	Sends out a request to join local LoRaWAN network in set mode, there are two responses from the 
@@ -127,7 +127,7 @@ int RN2483_initMAC();
     @return RN2483_DENIED Request went through, but the network denied your request
     @return RN2483_SUCCESS Successfully joined LoRaWAN network
 */
-int RN2483_join(int mode);
+extern int RN2483_join(int mode);
 //! Sends a confirmed/unconfirmed frame with an application payload of buff.
 /*!
     Transmits data over a LoRa network in either confirmed or unconfirmed mode.
@@ -139,7 +139,7 @@ int RN2483_join(int mode);
     @return RN2483_ERR_BUSY All channels are currently busy, try sending data less frequently
     @return RN2483_ERR_JOIN You need to join a LoRaWAN network to TX data over one
 */
-int RN2483_tx(const char *buff, bool confirm, char *downlink);
+extern int RN2483_tx(const char *buff, bool confirm, char *downlink);
 
 #endif // RN2483
 
