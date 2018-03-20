@@ -56,17 +56,17 @@ static void get_hex_string(uint8_t *buff, int buff_len, char *ret)
     return;
 }
 // Reads from the RX buffer into response until '\n' or EOB
-static int RN2483_response(MicroBitSerial *serial, uint8_t *buffer, uint8_t buffer_len)
+static int RN2483_response(MicroBitSerial *serial, uint8_t *buffer)
 {
     int i;
 
-    for (i = 0; i < buffer_len; i++)
+    for (i = 0; i < RN2483_MAX_BUFF; i++)
     {
         buffer[i] = serial->read(ASYNC);
 
-        if (buffer[i] == 0x0C)
+        if (buffer[i] == 0x0C)  //mbit gives out 0x0C a bunch?
             i--;
-        else if (buffer[i] == '\n')
+        else if (buffer[i] == '\n' || buffer[i] == '\0')
             break;
     }
 
@@ -85,11 +85,10 @@ int RN2483_reset(MicroBitSerial *serial, MicroBitPin *RESET)
     RESET->setDigitalValue(0);
     RESET->setDigitalValue(1);
 
-    int ret = serial->read();   //firmware version should be in buff (RN2483...)
-    if (ret == 'R')
+    int ret = RN2483_response(serial, NULL);   //firmware version should be in buff (RN2483...)
+
+    if (ret != RN2483_ERR_PANIC)
         ret = RN2483_SUCCESS;
-    else
-        ret = RN2483_ERR_PANIC;
 
     return ret;
 }
@@ -121,56 +120,68 @@ int RN2483_command(MicroBitSerial *serial, const char *command, char *response)
     serial->printf(command);
 
 	//recv response
-	if (RN2483_response(serial, (uint8_t *)response) != RN2483_ERR_PANIC)
+    int ret = RN2483_response(serial, (uint8_t *)response);
+	if (ret != RN2483_ERR_PANIC)
         return RN2483_SUCCESS;
-	else
-        return RN2483_ERR_PANIC;
+    
+    return ret;
 }
 
 // Retrieves the firmware version of the RN2483 module and stores it in buff.
-int RN2483_firmware(char *buff)
+int RN2483_firmware(MicroBitSerial *serial, char *buff)
 {
-	return RN2483_command("sys get ver\r\n", buff);
+	return RN2483_command(serial, "sys get ver\r\n", buff);
 }
 
 //LoRa
 // Initialises all the RN2483 MAC settings required to run LoRa commands (join, tx, etc).
-int RN2483_initMAC()
+int RN2483_initMAC(MicroBitSerial *serial)
 {
+    int i = -1;
 	int ret = RN2483_ERR_PANIC;
     char response[RN2483_MAX_BUFF];
 
 	do {
-		ret++;
-        response[0] = '\0';
-		switch(ret)
+		i++;
+        memset(response, '\0', RN2483_MAX_BUFF);
+		switch(i)
 		{
-			case 0:	//reset MAC
-				ret = RN2483_command("mac reset " LoRaWAN_Frequency "\r\n", response);
+            case 0:	//reset MAC
+				ret = RN2483_command(serial, "mac reset " LoRaWAN_Frequency "\r\n", response);
 				break;
-			case 1:	//set DevAddr
-				ret = RN2483_command("mac set devaddr " LoRaWAN_DevAddr "\r\n", response);
+            case 1:	//set DevAddr
+				ret = RN2483_command(serial, "mac set devaddr " LoRaWAN_DevAddr "\r\n", response);
 				break;
 			case 2:	//set DevEui
-				ret = RN2483_command("mac set deveui " LoRaWAN_DevEUI "\r\n", response);
+				ret = RN2483_command(serial, "mac set deveui " LoRaWAN_DevEUI "\r\n", response);
 				break;
 			case 3:	//set AppEui
-				ret = RN2483_command("mac set appeui " LoRaWAN_AppEUI "\r\n", response);
+				ret = RN2483_command(serial, "mac set appeui " LoRaWAN_AppEUI "\r\n", response);
 				break;
 			case 4:	//set AppKey
-				ret = RN2483_command("mac set appkey " LoRaWAN_AppKey "\r\n", response);
+				ret = RN2483_command(serial, "mac set appkey " LoRaWAN_AppKey "\r\n", response);
 				break;
 			case 5:	//set DataRate
-				ret = RN2483_command("mac set dr " LoRaWAN_DataRate "\r\n", response);
+				ret = RN2483_command(serial, "mac set dr " LoRaWAN_DataRate "\r\n", response);
 				break;
-            case 6: //save
-                ret = RN2483_command("mac save\r\n", response);
+            case 6: //set NwkSKey
+                ret = RN2483_command(serial, "mac set nwkskey " LoRaWAN_NwkSKey "\r\n", response);
+                break;
+            case 7: //set AppSkey
+                ret = RN2483_command(serial, "mac set appskey " LoRaWAN_AppSKey "\r\n", response);
+                break;
+            case 8: //set ADR
+                ret = RN2483_command(serial, "mac set adr " LoRaWAN_ADR "\r\n", response);
+                break;
+            case 9: //save
+                ret = RN2483_command(serial, "mac save\r\n", response);
                 break;
 		}
-	} while (ret == RN2483_SUCCESS && strcmp(response, "ok\r\n") == 0);
+	} while (i < 10 && ret == RN2483_SUCCESS && strcmp(response, "ok\r\n") == 0);
 
 	return ret;
 }
+
 // Attempts to join a LoRa network using the specified mode.
 int RN2483_join(int mode)
 {

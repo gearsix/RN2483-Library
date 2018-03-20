@@ -97,7 +97,7 @@ extern int	RN2483_command(MicroBitSerial *serial, const char *command, char *res
     @return RN2483_SUCCESS Successfully wrote the firmware version of RN2483 into response
     @return RN2483_ERR_PANIC Managed to read <= 0 bytes...
 */
-extern int RN2483_firmware(char *buff);
+extern int RN2483_firmware(MicroBitSerial *serial, char *buff);
 
 //LoRa
 //! Initialises all the RN2483 MAC settings required to run LoRa commands (join, tx, etc).
@@ -110,7 +110,7 @@ extern int RN2483_firmware(char *buff);
 			RN2483
 	@return RN2483_ERR_PANIC If this happens something went really wrong when writing a command
 */
-extern int RN2483_initMAC();
+extern int RN2483_initMAC(MicroBitSerial *serial);
 //! Attempts to join a LoRa network using the specified mode.
 /*!
 	Sends out a request to join local LoRaWAN network in set mode, there are two responses from the 
