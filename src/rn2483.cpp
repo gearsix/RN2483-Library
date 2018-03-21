@@ -95,20 +95,18 @@ int RN2483_reset(MicroBitSerial *serial, MicroBitPin *RESET)
     return ret;
 }
 // Attempts to trigger the auto-baud detection sequence.
-int RN2483_autobaud(int baud)
+int RN2483_autobaud(MicroBitSerial *serial, int baudrate)
 {
-    #ifndef DEBUG
-       #error "This function is platform-specific and requires implementing (see below)"
-    #endif
-    /*
-        implementation depends on platform?
+    int ret;
+    char buff[RN2483_MAX_BUFF];
 
-        send break to RN2483
-        set baud rate
-        send 0x55
+    serial->send_break();
+    serial->baud(baudrate);
+    serial->send(0x55);
 
-        check success with "sys get ver\r\n"
-    */
+    ret = RN2483_firmware(serial, buff)
+    
+    return ret;
 }
 // Sends a command to the RN2483 and sets the resposne in buffer
 int RN2483_command(MicroBitSerial *serial, const char *command, char *response)
