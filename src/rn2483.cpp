@@ -55,6 +55,22 @@ static void get_hex_string(uint8_t *buff, int buff_len, char *ret)
 
     return;
 }
+// Converts string a string representation of hex characters to ascii
+static void get_text_string(const char *hex, int hex_len, char *ret)
+{
+    char byte[3];
+
+    for (int i = 0; i < hex_len; i+=2)
+    {
+        byte[0] = hex[i];
+        byte[1] = hex[i+1];
+        byte[2] = '\0';
+
+        ret[i/2] = (char)strtol(byte, NULL, 16);
+    }
+
+    return;
+}
 // Reads from the RX buffer into response until '\n' or EOB
 static int RN2483_response(MicroBitSerial *serial, uint8_t *buffer)
 {
@@ -123,7 +139,7 @@ int RN2483_command(MicroBitSerial *serial, const char *command, char *response)
     int ret = RN2483_response(serial, (uint8_t *)response);
 	if (ret != RN2483_ERR_PANIC)
         return RN2483_SUCCESS;
-    
+
     return ret;
 }
 
@@ -201,7 +217,7 @@ int RN2483_initMAC(MicroBitSerial *serial)
 }
 
 // Attempts to join a LoRa network using the specified mode.
-int RN2483_join(int mode)
+int RN2483_join(MicroBitSerial *serial, int mode)
 {
 	int ret = RN2483_ERR_PANIC;
     char response[RN2483_MAX_BUFF];
