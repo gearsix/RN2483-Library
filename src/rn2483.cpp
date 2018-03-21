@@ -208,9 +208,9 @@ int RN2483_join(int mode)
 
     // send command & recv initial response
 	if (mode == RN2483_OTAA)
-		ret = RN2483_command("mac join otaa\r\n", response);
+		ret = RN2483_command(serial, "mac join otaa\r\n", response);
 	else if (mode == RN2483_ABP)
-		ret = RN2483_command("mac join abp\r\n", response);
+		ret = RN2483_command(serial, "mac join abp\r\n", response);
 	else
 		ret = RN2483_ERR_PARAM;
 
@@ -219,10 +219,12 @@ int RN2483_join(int mode)
         // if initial response success, wait for network response
         if (strcmp(response, "ok\r\n") == 0)
         {
-            //@todo add delay here? -testing
-            response[0] = '\0';
-            if (RN2483_response((uint8_t *)response) != RN2483_ERR_PANIC)
-                ret = (strcmp(response, "accepted\r\n")? RN2483_SUCCESS : RN2483_DENIED);
+            RN2483_response(serial, (uint8_t *)response);
+
+            if (strcmp(response, "accepted\r\n") == 0)
+                ret = RN2483_SUCCESS;
+            else if (strcmp(response, "denied\r\n") == 0)
+                ret = RN2483_DENIED;
             else
                 ret = RN2483_ERR_PANIC;
         }
@@ -233,10 +235,13 @@ int RN2483_join(int mode)
             ret = RN2483_ERR_BUSY;
         else if (strcmp(response, "silent\r\n") == 0 || strcmp(response, "busy\r\n") == 0 || strcmp(response, "mac_paused\r\n") == 0)
             ret = RN2483_ERR_STATE;
+        else
+            ret = RN2483_ERR_PANIC;
 	}
 
     return ret;
 }
+/*
 // Sends a confirmed/unconfirmed frame with an application payload of buff.
 int RN2483_tx(const char *buff, bool confirm, char *downlink)
 {
