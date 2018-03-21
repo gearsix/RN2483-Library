@@ -65,14 +65,14 @@ enum RN2483_JoinModes {
 extern int RN2483_reset(MicroBitSerial *serial, MicroBitPin *RESET);
 //! Attempts to trigger the auto-baud detection sequence.
 /*!
-    Triggers the autobaud detction sequence by sending a break, setting the baudrate and sending 0x55.
+    Triggers the autobaud detection sequence by sending a break, setting the baudrate and sending 0x55.
 
     The new baudrate is tested by attempting to retrieve the firmware version.
 
     @return RN2483_SUCCESS if RN2483_firmware() succeeded after autobaud.
     @return RN2483_ERR_PANIC if RN2483_firmware() failed after autobaud.
 */
-extern int RN2483_autobaud(int baud);
+extern int RN2483_autobaud(MicroBitSerial *serial, int baudrate);
 //! Write a command to the RN2483 and recieve it's response
 /*!
     Send a command to the RN2483, if the command is valid the RN2483's response will be written 
@@ -130,14 +130,16 @@ extern int RN2483_initMAC(MicroBitSerial *serial);
 extern int RN2483_join(int mode);
 //! Sends a confirmed/unconfirmed frame with an application payload of buff.
 /*!
-    Transmits data over a LoRa network in either confirmed or unconfirmed mode.
+	Transmits data over a LoRa network in either confirmed or unconfirmed mode.
 
     @return RN2483_NODOWN Transmission was successful but the server sent no downlink data
-    @return RN2483_ERR_PANIC Tx was a success, but the server sent an invalid downlink packet
+    @return RN2483_ERR_PANIC Tx was a success but the server sent an invalid downlink packet
     @return RN2483_SUCCESS Transmission was successful and downlink data was read into downlink
-    @return RN2483_ERR_PARAM Invalid LoRaWAN_Port or invalid buff data
+    @return RN2483_ERR_PARAM Invalid LoRaWAN_Port or invalid buff
     @return RN2483_ERR_BUSY All channels are currently busy, try sending data less frequently
     @return RN2483_ERR_JOIN You need to join a LoRaWAN network to TX data over one
+    @return RN2483_ERR_STATE Cannot TX while RN2483 is in silent, busy or paused modes
+    @return RN2483_ERR_PANIC something went seriously wrong
 */
 int RN2483_tx(MicroBitSerial *serial, const char *buff, bool confirm, char *downlink);
 
