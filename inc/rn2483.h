@@ -34,7 +34,7 @@
 enum RN2483_ReturnCodes {
 	RN2483_SUCCESS,                 /**< Success */
 	RN2483_ERR_PARAM,               /**< Error: invalid parameter passed to function */
-	RN2483_EOB = RN2483_MAX_BUFF,	/**< Reached end of buffer passed to function */
+	RN2483_EOB,                     /**< Reached end of buffer passed to function */
     RN2483_ERR_KIDS,                /**< Error: tried to join a LoraWAN network without the correct keys & ids (kids) configured */
     RN2483_ERR_BUSY,                /**< Error: tried to join/tx but all configured frequency channels were busy, wait and try again */
     RN2483_ERR_STATE,               /**< Error: current state cannot perform action, see RN2483 documentation */
@@ -128,10 +128,10 @@ extern int RN2483_initMAC(MicroBitSerial *serial);
     @return RN2483_DENIED Request went through, but the network denied your request
     @return RN2483_SUCCESS Successfully joined LoRaWAN network
 */
-extern int RN2483_join(int mode);
+extern int RN2483_join(MicroBitSerial *serial, int mode);
 //! Sends a confirmed/unconfirmed frame with an application payload of buff.
 /*!
-	Transmits data over a LoRa network in either confirmed or unconfirmed mode.
+    Transmits data over a LoRa network in either confirmed or unconfirmed mode.
 
     @return RN2483_NODOWN Transmission was successful but the server sent no downlink data
     @return RN2483_ERR_PANIC Tx was a success but the server sent an invalid downlink packet
@@ -142,7 +142,7 @@ extern int RN2483_join(int mode);
     @return RN2483_ERR_STATE Cannot TX while RN2483 is in silent, busy or paused modes
     @return RN2483_ERR_PANIC something went seriously wrong
 */
-int RN2483_tx(MicroBitSerial *serial, const char *buff, bool confirm, char *downlink);
+extern int RN2483_tx(MicroBitSerial *serial, const char *buff, bool confirm, char *downlink);
 
 #endif // RN2483
 
