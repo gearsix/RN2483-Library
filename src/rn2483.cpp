@@ -85,11 +85,13 @@ int RN2483_reset(MicroBitSerial *serial, MicroBitPin *RESET)
     RESET->setDigitalValue(0);
     RESET->setDigitalValue(1);
 
-    int ret = RN2483_response(serial, NULL);   //firmware version should be in buff (RN2483...)
+    uint8_t *ver = (uint8_t *)malloc(RN2483_MAX_BUFF);
+    int ret = RN2483_response(serial, ver);   //firmware version should be in buff (RN2483...)
 
     if (ret != RN2483_ERR_PANIC)
         ret = RN2483_SUCCESS;
 
+    free(ver);
     return ret;
 }
 // Attempts to trigger the auto-baud detection sequence.
