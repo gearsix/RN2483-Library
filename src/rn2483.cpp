@@ -147,37 +147,55 @@ int RN2483_initMAC(MicroBitSerial *serial)
 		switch(i)
 		{
             case 0:	//reset MAC
-				ret = RN2483_command(serial, "mac reset " LoRaWAN_Frequency "\r\n", response);
-				break;
+                #ifdef LoRaWAN_Frequency
+                    ret = RN2483_command(serial, "mac reset " LoRaWAN_Frequency "\r\n", response);
+                #endif
+                break;
             case 1:	//set DevAddr
-				ret = RN2483_command(serial, "mac set devaddr " LoRaWAN_DevAddr "\r\n", response);
-				break;
-			case 2:	//set DevEui
-				ret = RN2483_command(serial, "mac set deveui " LoRaWAN_DevEUI "\r\n", response);
-				break;
-			case 3:	//set AppEui
-				ret = RN2483_command(serial, "mac set appeui " LoRaWAN_AppEUI "\r\n", response);
-				break;
-			case 4:	//set AppKey
-				ret = RN2483_command(serial, "mac set appkey " LoRaWAN_AppKey "\r\n", response);
-				break;
-			case 5:	//set DataRate
-				ret = RN2483_command(serial, "mac set dr " LoRaWAN_DataRate "\r\n", response);
-				break;
-            case 6: //set NwkSKey
-                ret = RN2483_command(serial, "mac set nwkskey " LoRaWAN_NwkSKey "\r\n", response);
+                #ifdef LoRaWAN_DevAddr
+                    ret = RN2483_command(serial, "mac set devaddr " LoRaWAN_DevAddr "\r\n", response);
+               #endif
+                break;
+            case 2:	//set DevEui
+                #ifdef LoRaWAN_DevEUI
+                    ret = RN2483_command(serial, "mac set deveui " LoRaWAN_DevEUI "\r\n", response);
+                #endif
+                break;
+            case 3:	//set AppEui
+                #ifdef LoRaWAN_AppEUI
+                    ret = RN2483_command(serial, "mac set appeui " LoRaWAN_AppEUI "\r\n", response);
+                #endif
+                break;
+            case 4:	//set AppKey
+                #ifdef LoRaWAN_AppKey
+                    ret = RN2483_command(serial, "mac set appkey " LoRaWAN_AppKey "\r\n", response);
+                #endif
+                break;
+            case 5:	//set DataRate
+                #ifdef LoRaWAN_DataRate
+                    ret = RN2483_command(serial, "mac set dr " LoRaWAN_DataRate "\r\n", response);
+                #endif
+                break;
+             case 6: //set NwkSKey
+                #ifdef LoRaWAN_NwkSKey
+                    ret = RN2483_command(serial, "mac set nwkskey " LoRaWAN_NwkSKey "\r\n", response);
+                #endif
                 break;
             case 7: //set AppSkey
-                ret = RN2483_command(serial, "mac set appskey " LoRaWAN_AppSKey "\r\n", response);
+                #ifdef LoRaWAN_AppSKey
+                    ret = RN2483_command(serial, "mac set appskey " LoRaWAN_AppSKey "\r\n", response);
+                #endif
                 break;
             case 8: //set ADR
-                ret = RN2483_command(serial, "mac set adr " LoRaWAN_ADR "\r\n", response);
+                #ifdef LoRaWAN_ADR
+                    ret = RN2483_command(serial, "mac set adr " LoRaWAN_ADR "\r\n", response);
+                #endif
                 break;
             case 9: //save
                 ret = RN2483_command(serial, "mac save\r\n", response);
                 break;
 		}
-	} while (i < 10 && ret == RN2483_SUCCESS && strcmp(response, "ok\r\n") == 0);
+    } while (i < 10 && ret == RN2483_SUCCESS);
 
 	return ret;
 }
