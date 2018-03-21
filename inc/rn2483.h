@@ -139,7 +139,7 @@ extern int RN2483_join(int mode);
     @return RN2483_ERR_BUSY All channels are currently busy, try sending data less frequently
     @return RN2483_ERR_JOIN You need to join a LoRaWAN network to TX data over one
 */
-extern int RN2483_tx(const char *buff, bool confirm, char *downlink);
+int RN2483_tx(MicroBitSerial *serial, const char *buff, bool confirm, char *downlink);
 
 #endif // RN2483
 

@@ -156,7 +156,7 @@ int RN2483_initMAC(MicroBitSerial *serial)
             case 1:	//set DevAddr
                 #ifdef LoRaWAN_DevAddr
                     ret = RN2483_command(serial, "mac set devaddr " LoRaWAN_DevAddr "\r\n", response);
-               #endif
+                #endif
                 break;
             case 2:	//set DevEui
                 #ifdef LoRaWAN_DevEUI
@@ -243,15 +243,16 @@ int RN2483_join(int mode)
 
     return ret;
 }
-/*
+
 // Sends a confirmed/unconfirmed frame with an application payload of buff.
-int RN2483_tx(const char *buff, bool confirm, char *downlink)
+int RN2483_tx(MicroBitSerial *serial, const char *buff, bool confirm, char *downlink)
 {
     int ret = RN2483_ERR_PANIC;
     char response[RN2483_MAX_BUFF];
 
     // figure out max payload length based on data rate
     int max_len = 0;
+    #ifdef LoRaWAN_DataRate
 	if (strcmp(LoRaWAN_DataRate, "0") == 0 || strcmp(LoRaWAN_DataRate, "1") == 0 || strcmp(LoRaWAN_DataRate, "2") == 0)
 		max_len = 59;
 	else if (strcmp(LoRaWAN_DataRate, "3") == 0)
@@ -260,6 +261,7 @@ int RN2483_tx(const char *buff, bool confirm, char *downlink)
 		max_len = 230;
 	else
 		max_len = 230;
+    #endif
 
     // get payload
     char payload[strlen(buff)*2];   //1byte = 2hex
@@ -271,26 +273,27 @@ int RN2483_tx(const char *buff, bool confirm, char *downlink)
         sprintf(cmd, "mac tx cnf %s %s\r\n", LoRaWAN_Port, payload);
     else
         sprintf(cmd, "mac tx uncnf %s %s\r\n", LoRaWAN_Port, payload);
-    ret = RN2483_command(cmd, response);
+    ret = RN2483_command(serial, cmd, response);
 
     if (ret == RN2483_SUCCESS)
     {
         // if initial response success, wait for tx success
         if (strcmp(response, "ok\r\n") == 0)
         {
-            //@todo add delay here? -testing
-            response[0] = '\0';
-            if (RN2483_response((uint8_t *)response) != RN2483_ERR_PANIC)
+            memset(response, '\0', RN2483_MAX_BUFF);
+            RN2483_response(serial, (uint8_t *)response);
+            
+            if (strcmp(response, "mac_tx_ok\r\n") == 0)
+                ret = RN2483_NODOWN;
+            else if (strcmp(response, "mac_err\r\n") == 0 || strcmp(response, "invalid_data_len\r\n") == 0)
+                ret = RN2483_ERR_PANIC;
+            else //assume downlink data (mac_rx <port> <data>)
             {
-                if (strcmp(response, "mac_tx_ok\r\n") == 0)
-                    ret = RN2483_NODOWN;
-                else if (strcmp(response, "mac_err\r\n") == 0 || strcmp(response, "invalid_data_len\r\n") == 0)
-                    ret = RN2483_ERR_PANIC;
-                else //assume downlink data
-                {
-                    memcpy(downlink, response, strlen(response));
-                    return RN2483_SUCCESS;
-                }
+                //convert 'hex' to 'ascii' equivalent
+                char hex_data[strlen(response-8)];
+                memcpy(hex_data, &response[9], strlen(response)-9);
+                get_text_string(hex_data, strlen(hex_data), downlink);
+                ret = RN2483_SUCCESS;
             }
         }
         // else return err code
@@ -302,7 +305,7 @@ int RN2483_tx(const char *buff, bool confirm, char *downlink)
             ret = RN2483_ERR_JOIN;
         else if (strcmp(response, "silent\r\n") == 0 || strcmp(response, "busy\r\n") == 0 || strcmp(response, "mac_paused\r\n") == 0)
             ret = RN2483_ERR_STATE;
-        else if (strcmp(response, "invalid_data_len\r\n") == 0)
+        else
             ret = RN2483_ERR_PANIC;
     }
 
