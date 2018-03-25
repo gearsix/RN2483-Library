@@ -93,7 +93,7 @@ int RN2483_command(const char *command, char *response)
 {
 	//check command ends with \r\n (easy to forget)
 	int end = strlen(command);
-	if (command[end-1] != '\r' || command[end] != '\n')
+	if (command[end-2] != '\r' || command[end-1] != '\n')
 		return RN2483_ERR_PARAM;
 	
 	//send command
