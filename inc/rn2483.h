@@ -22,7 +22,6 @@
 #include <string.h>     //strlen, strcmp
 #include <stdint.h>     //uint8_t
 #include <stdbool.h>    //bool
-#include <stdlib.h>     //malloc
 //defines
 #define RN2483_MAX_BUFF	33 /**< Maximum(+1) number of characters returned by RN2483 responses */
 

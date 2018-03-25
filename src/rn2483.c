@@ -134,7 +134,7 @@ int RN2483_firmware(char *buff)
 int RN2483_initMAC()
 {
 	int ret = RN2483_ERR_PANIC;
-	char *response = (char *)malloc(RN2483_MAX_BUFF);
+    char response[RN2483_MAX_BUFF];
 
 	do {
 		ret++;
@@ -165,14 +165,13 @@ int RN2483_initMAC()
 		}
 	} while (ret == RN2483_SUCCESS && strcmp(response, "ok\r\n") == 0);
 
-    free(response);
 	return ret;
 }
 // Attempts to join a LoRa network using the specified mode.
 int RN2483_join(int mode)
 {
 	int ret = RN2483_ERR_PANIC;
-	char *response = (char *)malloc(RN2483_MAX_BUFF);
+    char response[RN2483_MAX_BUFF];
 
     // send command & recv initial response
 	if (mode == RN2483_OTAA)
@@ -203,14 +202,13 @@ int RN2483_join(int mode)
             ret = RN2483_ERR_STATE;
 	}
 
-    free(response);
     return ret;
 }
 // Sends a confirmed/unconfirmed frame with an application payload of buff.
 int RN2483_tx(const char *buff, bool confirm, char *downlink)
 {
     int ret = RN2483_ERR_PANIC;
-    char *response = (char *)malloc(RN2483_MAX_BUFF);
+    char response[RN2483_MAX_BUFF];
 
     // figure out max payload length based on data rate
     int max_len = 0;
@@ -224,11 +222,11 @@ int RN2483_tx(const char *buff, bool confirm, char *downlink)
 		max_len = 230;
 
     // get payload
-    char *payload = (char *)malloc(strlen(buff)*2); // 1 byte = 2 hex chars
+    char payload[strlen(buff)*2];   //1byte = 2hex
     get_hex_string((uint8_t *)buff, strlen(buff), payload); // see documentation notes on this
 
     // send command
-    char *cmd = (char *)malloc(max_len);
+    char cmd[max_len];
     if (confirm)
         sprintf(cmd, "mac tx cnf %s %s\r\n", LoRaWAN_Port, payload);
     else
@@ -268,8 +266,6 @@ int RN2483_tx(const char *buff, bool confirm, char *downlink)
             ret = RN2483_ERR_PANIC;
     }
 
-    free(cmd);
-    free(response);
     return ret;
 }
 
