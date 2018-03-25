@@ -16,6 +16,20 @@
 // FUNCTIONS
 //===========
 //PRIVATE
+//! read a single byte from via UART from the RN2483
+static uint8_t read()
+{
+    #ifndef DEBUG
+       #error "This function is platform-specific and requires implementing"
+    #endif
+}
+//! write a string of bytes via UART to the RN2483
+static void write(uint8_t *string)
+{
+    #ifndef DEBUG
+       #error "This function is platform-specific and requires implementing"
+    #endif
+}
 // Converts buff into a string representation of it hexadecimal representation
 static void get_hex_string(uint8_t *buff, int buff_len, char *ret)
 {
@@ -48,7 +62,7 @@ static int RN2483_response(uint8_t *response)
 
 	while (*response != '\n' && i < RN2483_MAX_BUFF)
 	{
-		*response++ = fgetc(stdin);
+		*response++ = read();
 		i++;
 	}
 
@@ -63,7 +77,10 @@ static int RN2483_response(uint8_t *response)
 // Resets the RN2483 by toggling the RESET pin
 int RN2483_reset()
 {
-    /* PLACEHOLDER
+    #ifndef DEBUG
+       #error "This function is platform-specific and requires implemention (see below)"
+    #endif
+    /*
         implementation depends on platform?
         
         set RN2483 RESET pin HIGH
@@ -72,12 +89,14 @@ int RN2483_reset()
 
         RN2483_response() to check response == success
     */
-    return RN2483_ERR_PANIC;
 }
 // Attempts to trigger the auto-baud detection sequence.
 int RN2483_autobaud(int baud)
 {
-    /* PLACEHOLDER
+    #ifndef DEBUG
+       #error "This function is platform-specific and requires implementing (see below)"
+    #endif
+    /*
         implementation depends on platform?
 
         send break to RN2483
@@ -86,7 +105,6 @@ int RN2483_autobaud(int baud)
 
         check success with "sys get ver\r\n"
     */
-    return RN2483_ERR_PANIC;
 }
 // Sends a command to the RN2483 and sets the resposne in buffer
 int RN2483_command(const char *command, char *response)
@@ -169,7 +187,7 @@ int RN2483_join(int mode)
         // if initial response success, wait for network response
         if (strcmp(response, "ok\r\n") == 0)
         {
-            //@TODO add delay here? -testing
+            //@todo add delay here? -testing
             response[0] = '\0';
             if (RN2483_response((uint8_t *)response) != RN2483_ERR_PANIC)
                 ret = (strcmp(response, "accepted\r\n")? RN2483_SUCCESS : RN2483_DENIED);
@@ -222,7 +240,7 @@ int RN2483_tx(const char *buff, bool confirm, char *downlink)
         // if initial response success, wait for tx success
         if (strcmp(response, "ok\r\n") == 0)
         {
-            //@TODO add delay here? -testing
+            //@todo add delay here? -testing
             response[0] = '\0';
             if (RN2483_response((uint8_t *)response) != RN2483_ERR_PANIC)
             {
