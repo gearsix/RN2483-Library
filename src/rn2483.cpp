@@ -17,18 +17,14 @@
 //===========
 //PRIVATE
 //! read a single byte from via UART from the RN2483
-static uint8_t read()
+static uint8_t read(MicroBitSerial *serial)
 {
-    #ifndef DEBUG
-       #error "This function is platform-specific and requires implementing"
-    #endif
+    return serial->read(ASYNC);
 }
 //! write a string of bytes via UART to the RN2483
-static void write(uint8_t *string)
+static void write(MicroBitSerial *serial, uint8_t *string)
 {
-    #ifndef DEBUG
-       #error "This function is platform-specific and requires implementing"
-    #endif
+    serial->printf(string);
 }
 // Converts buff into a string representation of it hexadecimal representation
 static void get_hex_string(uint8_t *buff, int buff_len, char *ret)
@@ -78,7 +74,7 @@ static int RN2483_response(MicroBitSerial *serial, uint8_t *buffer)
 
     for (i = 0; i < RN2483_MAX_BUFF; i++)
     {
-        buffer[i] = serial->read(ASYNC);
+        buffer[i] = read(serial);
 
         if (buffer[i] == 0x0C)  //mbit gives out 0x0C a bunch?
             i--;
@@ -101,13 +97,12 @@ int RN2483_reset(MicroBitSerial *serial, MicroBitPin *RESET)
     RESET->setDigitalValue(0);
     RESET->setDigitalValue(1);
 
-    uint8_t *ver = (uint8_t *)malloc(RN2483_MAX_BUFF);
+    uint8_t ver[RN2483_MAX_BUFF];
     int ret = RN2483_response(serial, ver);   //firmware version should be in buff (RN2483...)
 
     if (ret != RN2483_ERR_PANIC)
         ret = RN2483_SUCCESS;
 
-    free(ver);
     return ret;
 }
 // Attempts to trigger the auto-baud detection sequence.
@@ -133,7 +128,7 @@ int RN2483_command(MicroBitSerial *serial, const char *command, char *response)
 		return RN2483_ERR_PARAM;
 	
 	//send command
-    serial->printf(command);
+    write(serial, (uint8_t*)command);
 
 	//recv response
     int ret = RN2483_response(serial, (uint8_t *)response);
