@@ -53,12 +53,22 @@ enum RN2483_JoinModes {
 //system
 //! Resets the RN2483 by toggling the RESET pin
 /*!
-	TODO
+	Toogles the reset pin (from HIGH -> LOW -> HIGH).
+
+    The RN2483 module transmits it's firmware version upon being reset, so if the version is successful.
+
+    @return RN2483_SUCCESS if version was succesfully retrieved after toggling the RESET pin
+    @return RN2483_ERR_PANIC if version was not retrieved after toggling the RESET pin
 */
-int RN2483_reset();
+extern int RN2483_reset();
 //! Attempts to trigger the auto-baud detection sequence.
 /*!
-	TODO
+    Triggers the autobaud detction sequence by sending a break, setting the baudrate and sending 0x55.
+
+    The new baudrate is tested by attempting to retrieve the firmware version.
+
+    @return RN2483_SUCCESS if RN2483_firmware() succeeded after autobaud.
+    @return RN2483_ERR_PANIC if RN2483_firmware() failed after autobaud.
 */
 int RN2483_autobaud(int baud);
 //! Write a command to the RN2483 and recieve it's response
@@ -118,7 +128,14 @@ int RN2483_initMAC();
 int RN2483_join(int mode);
 //! Sends a confirmed/unconfirmed frame with an application payload of buff.
 /*!
-	TODO
+    Transmits data over a LoRa network in either confirmed or unconfirmed mode.
+
+    @return RN2483_NODOWN Transmission was successful but the server sent no downlink data
+    @return RN2483_ERR_PANIC Tx was a success, but the server sent an invalid downlink packet
+    @return RN2483_SUCCESS Transmission was successful and downlink data was read into downlink
+    @return RN2483_ERR_PARAM Invalid LoRaWAN_Port or invalid buff data
+    @return RN2483_ERR_BUSY All channels are currently busy, try sending data less frequently
+    @return RN2483_ERR_JOIN You need to join a LoRaWAN network to TX data over one
 */
 int RN2483_tx(const char *buff, bool confirm, char *downlink);
 
