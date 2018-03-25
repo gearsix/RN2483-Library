@@ -22,7 +22,7 @@ static uint8_t read(MicroBitSerial *serial)
     return serial->read(ASYNC);
 }
 //! write a string of bytes via UART to the RN2483
-static void write(MicroBitSerial *serial, uint8_t *string)
+static void write(MicroBitSerial *serial, const char *string)
 {
     serial->printf(string);
 }
@@ -115,7 +115,7 @@ int RN2483_autobaud(MicroBitSerial *serial, int baudrate)
     serial->baud(baudrate);
     serial->send(0x55);
 
-    ret = RN2483_firmware(serial, buff)
+    ret = RN2483_firmware(serial, buff);
     
     return ret;
 }
@@ -128,7 +128,7 @@ int RN2483_command(MicroBitSerial *serial, const char *command, char *response)
 		return RN2483_ERR_PARAM;
 	
 	//send command
-    write(serial, (uint8_t*)command);
+    write(serial, command);
 
 	//recv response
     int ret = RN2483_response(serial, (uint8_t *)response);
