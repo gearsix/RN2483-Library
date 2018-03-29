@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # General-Platform RN2483 Library
 A non-platform-specific embedded C library for the Micrchip RN2483 LoRa module.
 **Specifc platforms are supported on seperate branches!**
@@ -39,11 +38,14 @@ _Note: I am looking to expand this library in the future and tidy it up. Possibl
 ## Usage
 **Make sure to check the rn2483.cfg file to configure your LoRaWAN settings and run the Makefile**
 
-Setup is going to depend on your platform, so for that see the specific platform branch's README.
+**In the future I might change this branch so that instead of passing around a pointer to the uBit's serial object, you simply set a pointer at the start of your main**
 
-There's no init function or anything for setting up the pins, instead how the library communiates to the module is detirmed by the specific branches.
+For now, you need to just make sure you pass your uBit's serial object to each function, like so: ```&uBit.serial``` wherever it asks for a ```MicroBitSerial *``` parameter.
 
-In the _master_ branch, I initally had printf and getc functions for this (with the intention of letting the user reroute the stdin and stdout stream or redefine the functions with macros), but after experiencing the BBC Micro:Bit's CMake build process I decided it's easier to just decided to just use wrapper functions that are modified in each branch.
+The other thing you'll need to make sure to do is set the uBit's serial to the RN2483, it makes debugging a nightamre since the uBit can only have 1 active Serial instance (even if you create several objects) - for reliability's sake it's easiest to simply set the baud and redirect the uBit.serial. This can be done by:
+1. ```uBit.init()```
+2. ```uBit.serial.redirect(RN2483_TX_PIN, RN2483_RX_PIN);```
+3. ```uBit.serial.baud(57600);	//57600 is the RN2483's default baud rate```
 
 Aside from setup, the general usage should go:
 1. ```RN2483_reset(); //performs a hardware reset by toggling the RESET pin```
