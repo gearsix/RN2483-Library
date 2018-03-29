@@ -36,7 +36,13 @@ Aside from this, the other notable functions are obviously the ```join``` and ``
 _Note: I am looking to expand this library in the future and tidy it up. Possibly port it to C++ too._
 
 ## Usage
+##### platform/bbc-microbit-classic
 **Make sure to check the rn2483.cfg file to configure your LoRaWAN settings and run the Makefile**
+
+Since the BBC Micro:Bit yotta build obscures a lot of the build process from the user, it's easier to just copy the source and header files into your yotta module source/ directory and include them directly.
+I've written a small script to generate the config.h and do this (you'll need to provide the target module/source/ directory).
+
+I've tried adding the .a as an dependency in a .cmake file (http://docs.yottabuild.org/reference/buildsystem.html#custom-cmake), I've tried the "extraIncludes" field in the module.json, **honestly this is just easier**.
 
 **In the future I might change this branch so that instead of passing around a pointer to the uBit's serial object, you simply set a pointer at the start of your main**
 
@@ -80,15 +86,4 @@ Obviously, it's never this simple (although if you're lucky and how low enough l
 
 ## Authors
 - Alexander Collins (alexander-collins@outlook.com)
-=======
-# TODO
 
-# LoRa RN2483 Library
-## platform/bbc-microbit-classic
-Since the BBC Micro:Bit yotta build obscures a lot of the build process from the user, it's easier to just copy the source and header files into your yotta module source/ directory and include them directly.
-I've written a small script to generate the config.h and do this (you'll need to provide the target module/source/ directory).
-
-I've tried adding the .a as an dependency in a .cmake file (http://docs.yottabuild.org/reference/buildsystem.html#custom-cmake), I've tried the "extraIncludes" field in the module.json, **honestly this is just easier**.
-
-This branch is going to have all the changes to the library I've had to make for the BBC MicroBit.
->>>>>>> Decided I'll need to implement the lib into microbit demo like this :(
