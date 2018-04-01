@@ -49,6 +49,7 @@ static void get_hex_string(uint8_t *buff, int buff_len, char *ret)
         ret[i] = hex_map[nibble];
     }
 
+    ret[i] = '\0';
     return;
 }
 // Converts string a string representation of hex characters to ascii
@@ -97,7 +98,7 @@ int RN2483_reset(MicroBitSerial *serial, MicroBitPin *RESET)
     RESET->setDigitalValue(0);
     RESET->setDigitalValue(1);
 
-    uint8_t ver[RN2483_MAX_BUFF];
+    uint8_t ver[RN2483_MAX_BUFF] = {'\0'};
     int ret = RN2483_response(serial, ver);   //firmware version should be in buff (RN2483...)
 
     if (ret != RN2483_ERR_PANIC)
@@ -105,11 +106,12 @@ int RN2483_reset(MicroBitSerial *serial, MicroBitPin *RESET)
 
     return ret;
 }
+
 // Attempts to trigger the auto-baud detection sequence.
 int RN2483_autobaud(MicroBitSerial *serial, int baudrate)
 {
     int ret;
-    char buff[RN2483_MAX_BUFF];
+    char buff[RN2483_MAX_BUFF] = {'\0'};
 
     serial->send_break();
     serial->baud(baudrate);
@@ -119,6 +121,7 @@ int RN2483_autobaud(MicroBitSerial *serial, int baudrate)
     
     return ret;
 }
+
 // Sends a command to the RN2483 and sets the resposne in buffer
 int RN2483_command(MicroBitSerial *serial, const char *command, char *response)
 {
@@ -150,7 +153,7 @@ int RN2483_initMAC(MicroBitSerial *serial)
 {
     int i = -1;
 	int ret = RN2483_ERR_PANIC;
-    char response[RN2483_MAX_BUFF];
+    char response[RN2483_MAX_BUFF] = {'\0'};
 
 	do {
 		i++;
@@ -214,8 +217,8 @@ int RN2483_initMAC(MicroBitSerial *serial)
 // Attempts to join a LoRa network using the specified mode.
 int RN2483_join(MicroBitSerial *serial, int mode)
 {
-	int ret = RN2483_ERR_PANIC;
-    char response[RN2483_MAX_BUFF];
+	int ret = -1;
+    char response[RN2483_MAX_BUFF] = {'\0'};
 
     // send command & recv initial response
 	if (mode == RN2483_OTAA)
@@ -257,7 +260,7 @@ int RN2483_join(MicroBitSerial *serial, int mode)
 int RN2483_tx(MicroBitSerial *serial, const char *buff, bool confirm, char *downlink)
 {
     int ret = RN2483_ERR_PANIC;
-    char response[RN2483_MAX_BUFF];
+    char response[RN2483_MAX_BUFF] = {'\0'};
 
     // figure out max payload length based on data rate
     int max_len = 0;
@@ -273,11 +276,11 @@ int RN2483_tx(MicroBitSerial *serial, const char *buff, bool confirm, char *down
     #endif
 
     // get payload
-    char payload[strlen(buff)*2];   //1byte = 2hex
+    char payload[strlen(buff)*2] = {'\0'};   //1byte = 2hex
     get_hex_string((uint8_t *)buff, strlen(buff), payload); // see documentation notes on this
 
     // send command
-    char cmd[max_len];
+    char cmd[max_len] = {'\0'};
     if (confirm)
         sprintf(cmd, "mac tx cnf %s %s\r\n", LoRaWAN_Port, payload);
     else
@@ -291,17 +294,16 @@ int RN2483_tx(MicroBitSerial *serial, const char *buff, bool confirm, char *down
         {
             memset(response, '\0', RN2483_MAX_BUFF);
             RN2483_response(serial, (uint8_t *)response);
-            
+
             if (strcmp(response, "mac_tx_ok\r\n") == 0)
                 ret = RN2483_NODOWN;
             else if (strcmp(response, "mac_err\r\n") == 0 || strcmp(response, "invalid_data_len\r\n") == 0)
                 ret = RN2483_ERR_PANIC;
             else //assume downlink data (mac_rx <port> <data>)
             {
+            
                 //convert 'hex' to 'ascii' equivalent
-                char hex_data[strlen(response-8)];
-                memcpy(hex_data, &response[9], strlen(response)-9);
-                get_text_string(hex_data, strlen(hex_data), downlink);
+                get_text_string(&response[9], strlen(response)-9, downlink);
                 ret = RN2483_SUCCESS;
             }
         }

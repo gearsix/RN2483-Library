@@ -84,7 +84,6 @@ extern int RN2483_autobaud(MicroBitSerial *serial, int baudrate);
     @see RN2483 LoRa Technology Module Command Reference User's Guide
 */
 extern int	RN2483_command(MicroBitSerial *serial, const char *command, char *response);
-
 //! Retrieves the firmware version of the RN2483 module and stores it in buff.
 /*!
     If successful, buff should contain a string that looks like this:
