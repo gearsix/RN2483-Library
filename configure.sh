@@ -4,7 +4,7 @@
 ##
 
 # The source directory of the target yotta module you need the library for
-DIR_TARGET="/home/alex/Documents/uni/DSP/NEW/demo/src/"
+DIR_TARGET=
 
 # use pruned Makefile to generate inc/config.h
 make

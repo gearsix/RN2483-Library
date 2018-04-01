@@ -1,0 +1,11 @@
+{
+  "name": "embedded-lora-devkit-demo",
+  "version": "0.0.0",
+  "description": "A demo for the Embedded LoRa DevKit (LoRa RN2483 Library & Grove Module Drivers)",
+  "author": "Alexander Collins",
+  "license": "MIT",
+  "dependencies": {
+    "microbit": "lancaster-university/microbit"
+  },
+  "bin": "./src"
+}
