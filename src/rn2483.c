@@ -115,7 +115,7 @@ int RN2483_command(const char *command, char *response)
 		return RN2483_ERR_PARAM;
 	
 	//send command
-	fprintf(stdout, command);
+	write(command);
 
 	//recv response
 	if (RN2483_response((uint8_t *)response) != RN2483_ERR_PANIC)
