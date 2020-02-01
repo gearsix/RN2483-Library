@@ -1,6 +1,7 @@
 # General-Platform RN2483 Library
 A non-platform-specific embedded C library for the Micrchip RN2483 LoRa module.
-**Specifc platforms are supported on seperate branches!**
+
+**NOTE:** This repo is currently not maintained and was written against v1.0 of the LoRaWAN spec. Until it validated/updated it, you should probably consider it depreciated.
 
 ## Contents
 1. Overview
